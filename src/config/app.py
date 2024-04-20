@@ -4,7 +4,7 @@ from flask import Flask
 
 def register_blueprints(app):
 
-    routes = ("default",)
+    routes = ("default","profissional","cliente")
 
     try:
         for blueprint in routes:
@@ -17,7 +17,7 @@ def register_blueprints(app):
     except AssertionError:
         app.logger.info("Uma ou mais rotas estão em conflito")
 
-    except:
+    except Exception:
         app.logger.info("Erro Interno")
 
 
