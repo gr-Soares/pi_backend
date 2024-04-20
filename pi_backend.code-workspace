@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.autoSave": "afterDelay",
+		"editor.fontSize": 14,
+		"editor.tabSize": 4,
+		"files.exclude": {
+			"**/__pycache__": true,
+			"**/.env": true,
+			"**/pi_backend.code-workspace":true,
+			"**/.vscode":true
+		},
+		"python.envFile": "${workspaceFolder}/.env",
+		"python.formatting.provider": "none",
+		"python.analysis.diagnosticMode": "workspace",
+		"python.analysis.importFormat": "relative",
+		"pylint.importStrategy": "fromEnvironment",
+		"git.ignoreLimitWarning": true,
+		"gitlens.showWelcomeOnInstall": false,
+		"gitlens.showWhatsNewAfterUpgrades": false
+	}
+}
