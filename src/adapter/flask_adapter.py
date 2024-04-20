@@ -43,8 +43,7 @@ def flask_adapter(request: Any, route) -> Any:
                 query=query_string_params,
                 token=token,
             )
-    except Exception as e:
-        print(e)
+    except Exception:
         http_error = HttpErrors.error_409()
         return HttpResponse(
             status_code=http_error["status_code"], body=http_error["body"]

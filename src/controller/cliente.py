@@ -21,12 +21,28 @@ def create_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
             client.CLIENTE.insert_one(data.to_json())
 
             response = HttpResponse(200, {"Success": True, "Data": data.to_json()})
-        except Exception as e:
-            print(e)
+        except Exception:
             http_error = HttpErrors.error_422()
             response = HttpResponse(
                 status_code=http_error["status_code"],
                 body=http_error["body"],
             )
+
+    return response
+
+def list_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
+
+    try:
+        data = client.CLIENTE.find({}, {'_id': False})
+        data = list(data)
+
+        response = HttpResponse(200, {"Success": True, "Data": data})
+
+    except:
+        http_error = HttpErrors.error_422()
+        response = HttpResponse(
+            status_code=http_error["status_code"],
+            body=http_error["body"],
+        )
 
     return response
