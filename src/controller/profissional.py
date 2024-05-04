@@ -3,6 +3,8 @@ from src.models import Profissional, Endereco, Contato
 from src.adapter import HttpRequest, HttpResponse, HttpErrors
 from typing import Type
 
+from bson.objectid import ObjectId
+
 
 def create_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
 
@@ -16,7 +18,7 @@ def create_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
             http_request.body.pop("endereco")
             http_request.body.pop("contato")
 
-            data = Profissional(**http_request.body, contato=contato, endereco=endereco)
+            data = Profissional(**http_request.body, contato=contato, endereco=endereco, _id=ObjectId())
 
             client.PROFISSIONAL.insert_one(data.to_json())
 
@@ -34,12 +36,35 @@ def create_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
 def list_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
 
     try:
-        data = client.PROFISSIONAL.find({}, {'_id': False})
-        data = list(data)
+        if http_request.query:
+            _id = http_request.query["_id"]
+            data = client.PROFISSIONAL.find_one(ObjectId(_id))
+            data = [data]
+        else:
+            data = client.PROFISSIONAL.find()
+            data = list(data)
 
-        response = HttpResponse(200, {"Success": True, "Data": data})
+        dataList = []
 
-    except:
+        for i in data:
+            i = dict(i)
+
+            endereco = Endereco(**i["endereco"])
+            contato = Contato(**i["contato"])
+            _id = ObjectId(i["_id"])
+
+            i.pop("endereco")
+            i.pop("contato")
+            i.pop("_id")
+
+            dt = Profissional(**i, contato=contato, endereco=endereco, _id=_id)
+            dt = dt.to_json()
+            dataList.append(dt)
+
+        response = HttpResponse(200, {"Success": True, "Data": dataList})
+
+    except Exception as e:
+        print(e)
         http_error = HttpErrors.error_422()
         response = HttpResponse(
             status_code=http_error["status_code"],
