@@ -13,11 +13,11 @@ def create_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
         try:
             endereco = Endereco(**http_request.body["endereco"])
             contato = Contato(**http_request.body["contato"])
-            
+
             http_request.body.pop("endereco")
             http_request.body.pop("contato")
 
-            data = Cliente(**http_request.body, contato=contato, endereco=endereco, _id=ObjectId())
+            data = Cliente(**http_request.body, contato=contato, endereco=endereco)
 
             client.CLIENTE.insert_one(data.to_json())
 
@@ -31,13 +31,14 @@ def create_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
 
     return response
 
+
 def list_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
     response = None
     data = None
     try:
         if http_request.query:
             _id = http_request.query["_id"]
-            data = client.CLIENTE.find_one(ObjectId(_id))
+            data = client.CLIENTE.find_one({"_id": _id})
             data = [data]
         else:
             data = client.CLIENTE.find()
@@ -69,5 +70,56 @@ def list_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
             status_code=http_error["status_code"],
             body=http_error["body"],
         )
+
+    return response
+
+
+def update_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
+    response = None
+
+    if http_request.body:
+        try:
+            if http_request.query:
+                _id = http_request.query["_id"]
+                client.CLIENTE.update_one({"_id": _id}, {"$set": http_request.body})
+                return HttpResponse(200, {"Success": True, "Data": http_request.body})
+
+        except Exception:
+            http_error = HttpErrors.error_422()
+            response = HttpResponse(
+                status_code=http_error["status_code"],
+                body=http_error["body"],
+            )
+
+    http_error = HttpErrors.error_422()
+    response = HttpResponse(
+        status_code=http_error["status_code"],
+        body=http_error["body"],
+    )
+
+    return response
+
+
+def delete_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
+    response = None
+
+    try:
+        if http_request.query:
+            _id = http_request.query["_id"]
+            client.CLIENTE.delete_one({"_id": _id})
+            return HttpResponse(200, {"Success": True, "Data": http_request.body})
+
+    except Exception:
+        http_error = HttpErrors.error_422()
+        response = HttpResponse(
+            status_code=http_error["status_code"],
+            body=http_error["body"],
+        )
+
+    http_error = HttpErrors.error_422()
+    response = HttpResponse(
+        status_code=http_error["status_code"],
+        body=http_error["body"],
+    )
 
     return response

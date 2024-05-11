@@ -18,7 +18,7 @@ def create_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
             http_request.body.pop("endereco")
             http_request.body.pop("contato")
 
-            data = Profissional(**http_request.body, contato=contato, endereco=endereco, _id=ObjectId())
+            data = Profissional(**http_request.body, contato=contato, endereco=endereco)
 
             client.PROFISSIONAL.insert_one(data.to_json())
 
@@ -38,7 +38,7 @@ def list_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
     try:
         if http_request.query:
             _id = http_request.query["_id"]
-            data = client.PROFISSIONAL.find_one(ObjectId(_id))
+            data = client.PROFISSIONAL.find_one({"_id": _id})
             data = [data]
         else:
             data = client.PROFISSIONAL.find()
@@ -70,5 +70,58 @@ def list_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
             status_code=http_error["status_code"],
             body=http_error["body"],
         )
+
+    return response
+
+
+def update_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
+    response = None
+
+    if http_request.body:
+        try:
+            if http_request.query:
+                _id = http_request.query["_id"]
+                client.PROFISSIONAL.update_one(
+                    {"_id": _id}, {"$set": http_request.body}
+                )
+                return HttpResponse(200, {"Success": True, "Data": http_request.body})
+
+        except Exception:
+            http_error = HttpErrors.error_422()
+            response = HttpResponse(
+                status_code=http_error["status_code"],
+                body=http_error["body"],
+            )
+
+    http_error = HttpErrors.error_422()
+    response = HttpResponse(
+        status_code=http_error["status_code"],
+        body=http_error["body"],
+    )
+
+    return response
+
+
+def delete_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
+    response = None
+
+    try:
+        if http_request.query:
+            _id = http_request.query["_id"]
+            client.PROFISSIONAL.delete_one({"_id": _id})
+            return HttpResponse(200, {"Success": True, "Data": http_request.body})
+
+    except Exception:
+        http_error = HttpErrors.error_422()
+        response = HttpResponse(
+            status_code=http_error["status_code"],
+            body=http_error["body"],
+        )
+
+    http_error = HttpErrors.error_422()
+    response = HttpResponse(
+        status_code=http_error["status_code"],
+        body=http_error["body"],
+    )
 
     return response
