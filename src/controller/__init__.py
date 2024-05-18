@@ -5,3 +5,4 @@ from .profissional import (
     delete_profissional,
 )
 from .cliente import create_cliente, list_cliente, update_cliente, delete_cliente
+from .login import login_control

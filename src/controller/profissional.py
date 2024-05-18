@@ -1,3 +1,4 @@
+from ..adapter.auth import encrypt_password
 from src.database import client
 from src.models import Profissional, Endereco, Contato
 from src.adapter import HttpRequest, HttpResponse, HttpErrors
@@ -56,6 +57,7 @@ def list_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
             i.pop("endereco")
             i.pop("contato")
             i.pop("_id")
+            i.pop("senha")
 
             dt = Profissional(**i, contato=contato, endereco=endereco, _id=_id)
             dt = dt.to_json()
@@ -81,6 +83,12 @@ def update_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
         try:
             if http_request.query:
                 _id = http_request.query["_id"]
+                senha = None
+                
+                if(http_request.query["senha"]):
+                    senha = encrypt_password(http_request.query["senha"])
+                    client.CLIENTE.update_one({"_id": _id}, {"$set": {"senha":senha}})
+                    
                 client.PROFISSIONAL.update_one(
                     {"_id": _id}, {"$set": http_request.body}
                 )

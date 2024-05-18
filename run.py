@@ -2,6 +2,8 @@ from src.config import create_app, config_dict
 from sys import exit
 from decouple import config
 
+from flask_cors import CORS
+
 
 DEBUG = config("DEBUG", default=True, cast=bool)
 get_config_mode = "Development" if DEBUG else "Production"
@@ -15,6 +17,8 @@ except KeyError:
 
 app = create_app(app_config)
 
+CORS(app)
+
 if DEBUG:
     app.logger.info("DEBUG      = " + str(DEBUG))
     app.logger.info("Enviroment = " + get_config_mode)
@@ -22,5 +26,4 @@ if DEBUG:
 
 
 if __name__ == "__main__":
-    
     app.run()

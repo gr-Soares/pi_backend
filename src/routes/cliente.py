@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 
-from src.adapter import flask_adapter
+from src.adapter import flask_adapter, flask_adapter_no_token
 from src.controller import create_cliente, list_cliente, update_cliente, delete_cliente
 
 blueprint = Blueprint("cliente", __name__)
@@ -8,7 +8,7 @@ blueprint = Blueprint("cliente", __name__)
 
 @blueprint.route("/cliente", methods=["POST"])
 def create():
-    response = flask_adapter(request=request, route=create_cliente)
+    response = flask_adapter_no_token(request=request, route=create_cliente)
 
     if response.status_code < 300:
         return jsonify(response.body), response.status_code
