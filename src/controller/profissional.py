@@ -1,3 +1,4 @@
+from ..models.atuacao import Atuacao
 from ..adapter.auth import encrypt_password
 from src.database import client
 from src.models import Profissional, Endereco, Contato
@@ -15,11 +16,25 @@ def create_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
         try:
             endereco = Endereco(**http_request.body["endereco"])
             contato = Contato(**http_request.body["contato"])
+            atuacao = http_request.body["atuacao"]
 
             http_request.body.pop("endereco")
             http_request.body.pop("contato")
+            http_request.body.pop("atuacao")
 
-            data = Profissional(**http_request.body, contato=contato, endereco=endereco)
+            atuacao_c = []
+
+            for at in list(atuacao):
+                d = dict(at)
+                s = client.ATUACAO.find_one({"_id": d["_id"]})
+                if s != None:
+                    atuacao_c.append(Atuacao(**s))
+                else:
+                    ob = Atuacao(d["descricao"])
+                    client.ATUACAO.insert_one(ob.to_json())
+                    atuacao_c.append(ob)
+                    
+            data = Profissional(**http_request.body, atuacao=atuacao_c, contato=contato, endereco=endereco)
 
             client.PROFISSIONAL.insert_one(data.to_json())
 
@@ -52,14 +67,21 @@ def list_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
 
             endereco = Endereco(**i["endereco"])
             contato = Contato(**i["contato"])
+            atuacao_l = []
+
+            for it in list(i["atuacao"]):
+                d = dict(it)
+                atuacao_l.append(Atuacao(it["descricao"], it["_id"]))
+
             _id = ObjectId(i["_id"])
 
+            i.pop("_id")
             i.pop("endereco")
             i.pop("contato")
-            i.pop("_id")
+            i.pop("atuacao")
             i.pop("senha")
 
-            dt = Profissional(**i, contato=contato, endereco=endereco, _id=_id)
+            dt = Profissional(**i, contato=contato, endereco=endereco, atuacao=atuacao_l, _id=_id)
             dt = dt.to_json()
             dataList.append(dt)
 

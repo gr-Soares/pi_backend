@@ -17,10 +17,10 @@ class Profissional:
         nome,
         nascimento,
         genero,
+        bio,
         endereco: Endereco = None,
         contato: Contato = None,
         atuacao: List = [],
-        habilidades: List = [],
         foto=None,
         senha = "",
         ativo=False,
@@ -32,10 +32,10 @@ class Profissional:
         self.nome = nome
         self.nascimento = nascimento
         self.genero = genero
+        self.bio = bio
         self.endereco = endereco
         self.contato = contato
         self.atuacao = atuacao
-        self.habilidades = habilidades
         self.foto = foto
         self.ativo = ativo
 
@@ -45,12 +45,12 @@ class Profissional:
             "usuario": self.usuario,
             "senha": self.senha,
             "nome": self.nome,
+            "bio": self.bio,
             "nascimento": self.nascimento,
             "genero": self.genero,
             "endereco": self.endereco.to_json() if self.endereco else None,
             "contato": self.contato.to_json() if self.contato else None,
-            "atuacao": self.atuacao,
-            "habilidades": self.habilidades,
+            "atuacao": [at.to_json() if at else None for at in self.atuacao],
             "foto": self.foto,
             "ativo": self.ativo
         }

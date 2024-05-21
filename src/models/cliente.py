@@ -13,6 +13,7 @@ class Cliente:
         nome,
         nascimento,
         genero,
+        bio,
         endereco: Endereco = None,
         contato: Contato = None,
         senha = "",
@@ -24,6 +25,7 @@ class Cliente:
         self.usuario = usuario
         self.senha = encrypt_password(senha)
         self.nome = nome
+        self.bio = bio
         self.nascimento = nascimento
         self.genero = genero
         self.endereco = endereco
@@ -36,6 +38,7 @@ class Cliente:
             "_id": ObjectId(self._id).__str__(),
             "usuario": self.usuario,
             "senha": self.senha,
+            "bio": self.bio,
             "nome": self.nome,
             "nascimento": self.nascimento,
             "genero": self.genero,

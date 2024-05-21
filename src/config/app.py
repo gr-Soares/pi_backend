@@ -4,7 +4,7 @@ from flask import Flask
 
 def register_blueprints(app):
 
-    routes = ("default","profissional","cliente")
+    routes = ("default","profissional","cliente", "atuacao")
 
     try:
         for blueprint in routes:
