@@ -16,6 +16,7 @@ def login_control(http_request: Type[HttpRequest]) -> HttpResponse:
             type = http_request.body["tipo"]
             data = None
             token = None
+            _id = None
 
             if type == "Profissional":
                 data = client.PROFISSIONAL.find_one({"usuario": username})
@@ -26,10 +27,11 @@ def login_control(http_request: Type[HttpRequest]) -> HttpResponse:
                 data = dict(data)
 
                 if check_encrypted_password(senha, data["senha"]):
+                    _id =  ObjectId(data["_id"]).__str__()
                     payload = Payload(data["usuario"], ObjectId(data["_id"]).__str__())
                     token = encode_token(payload)
 
-            response = HttpResponse(200, {"Success": True, "Token": token})
+            response = HttpResponse(200, {"Success": True, "Token": token, "_id":_id})
 
             if token == None:
                 http_error = HttpErrors.error_403()

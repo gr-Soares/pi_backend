@@ -38,6 +38,8 @@ def create_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
 
             client.PROFISSIONAL.insert_one(data.to_json())
 
+            data.senha = ""
+
             response = HttpResponse(200, {"Success": True, "Data": data.to_json()})
         except:
             http_error = HttpErrors.error_422()

@@ -1,19 +1,19 @@
 from flask import Blueprint, jsonify, request
 
-from src.adapter import flask_adapter_no_token, flask_adapter
+from src.adapter import flask_adapter
 from src.controller import (
-    create_atuacao,
-    list_atuacao,
-    update_atuacao,
-    delete_atuacao,
+    create_portfolio,
+    list_portfolio,
+    update_portfolio,
+    delete_portfolio,
 )
 
-blueprint = Blueprint("atuacao", __name__)
+blueprint = Blueprint("portfolio", __name__)
 
 
-@blueprint.route("/atuacao", methods=["POST"])
+@blueprint.route("/portfolio", methods=["POST"])
 def create():
-    response = flask_adapter(request=request, route=create_atuacao)
+    response = flask_adapter(request=request, route=create_portfolio)
 
     if response.status_code < 300:
         return jsonify(response.body), response.status_code
@@ -26,9 +26,9 @@ def create():
     )
 
 
-@blueprint.route("/atuacao", methods=["PUT"])
+@blueprint.route("/portfolio", methods=["PUT"])
 def update():
-    response = flask_adapter(request=request, route=update_atuacao)
+    response = flask_adapter(request=request, route=update_portfolio)
 
     if response.status_code < 300:
         return jsonify(response.body), response.status_code
@@ -41,9 +41,9 @@ def update():
     )
 
 
-@blueprint.route("/atuacao", methods=["GET"])
+@blueprint.route("/portfolio", methods=["GET"])
 def list():
-    response = flask_adapter_no_token(request=request, route=list_atuacao)
+    response = flask_adapter(request=request, route=list_portfolio)
 
     if response.status_code < 300:
         return jsonify(response.body), response.status_code
@@ -56,9 +56,9 @@ def list():
     )
 
 
-@blueprint.route("/atuacao", methods=["DELETE"])
+@blueprint.route("/portfolio", methods=["DELETE"])
 def delete():
-    response = flask_adapter(request=request, route=delete_atuacao)
+    response = flask_adapter(request=request, route=delete_portfolio)
 
     if response.status_code < 300:
         return jsonify(response.body), response.status_code
