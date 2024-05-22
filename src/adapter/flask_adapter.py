@@ -68,6 +68,7 @@ def flask_adapter_no_token(request: Any, route) -> Any:
 
     return response
 
+
 def flask_adapter(request: Any, route) -> Any:
     try:
         query_string_params = request.args.to_dict()
@@ -81,7 +82,16 @@ def flask_adapter(request: Any, route) -> Any:
     token = None
 
     try:
-        token_str = request.headers["TOKEN"]
+        token_str = ""
+        if request.headers.get("token"):
+            token_str = request.headers.get("token")
+        elif request.headers.get("Token"):
+            token_str = request.headers.get("Token")
+        else:
+            http_error = HttpErrors.error_401()
+            return HttpResponse(
+                status_code=http_error["status_code"], body=http_error["body"]
+            )
         token = decode_token(token_str)
     except:
         http_error = HttpErrors.error_401()
@@ -124,7 +134,7 @@ def flask_adapter(request: Any, route) -> Any:
 
     try:
         if http_request:
-            if(token != None):
+            if token != None:
                 response = route(http_request=http_request)
             else:
                 http_error = HttpErrors.error_403()

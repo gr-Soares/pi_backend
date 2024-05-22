@@ -13,7 +13,7 @@ class Cliente:
         nome,
         nascimento,
         genero,
-        bio,
+        bio = "",
         endereco: Endereco = None,
         contato: Contato = None,
         senha = "",
