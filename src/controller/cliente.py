@@ -85,7 +85,7 @@ def update_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
                 _id = http_request.query["_id"]
                 senha = None
                 
-                if(http_request.query["senha"]):
+                if(http_request.query.contains("senha")):
                     senha = encrypt_password(http_request.query["senha"])
                     client.CLIENTE.update_one({"_id": _id}, {"$set": {"senha":senha}})
 

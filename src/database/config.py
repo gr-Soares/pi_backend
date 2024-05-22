@@ -1,6 +1,10 @@
 from pymongo import MongoClient
 
-conn = MongoClient('mongodb://mongo:root@db', 27017)
+from decouple import config
+
+url = config("DB_URL", default="localhost")
+
+conn = MongoClient(url, 27017)
 client = conn.autonomia
 
 profiossional_exists_email = False
