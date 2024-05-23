@@ -12,4 +12,11 @@ from .portfolio import (
     update_portfolio,
     delete_portfolio,
 )
+from .avaliacao import (
+    create_avaliacao,
+    list_avaliacao,
+    update_avaliacao,
+    delete_avaliacao,
+    calculate_avaliacao,
+)
 from .login import login_control
