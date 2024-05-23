@@ -11,7 +11,7 @@ services:
     ports:
       - '5000:5000'
     environment:
-      DEBUG: false
+      DEBUG: False
       SECRET_KEY: fPPkMB4B2OduIcpiA0Gh9B2IOomEDP1ZWAes
       DB_URL: mongodb://mongo:root@db
     entrypoint: gunicorn --bind 0.0.0.0:5000 --timeout 120 --access-logfile api_log --worker-class gevent run:app
