@@ -17,7 +17,7 @@ for i in client.PROFISSIONAL.list_indexes():
         break
 
 if(not profiossional_exists_email):
-    client.PORTIFOLIO.create_index("user", name="user_un" ,unique=True)
+    client.PROFISSIONAL.create_index("usuario", name="user_un" ,unique=True)
 
 
 cliente_exists_email = False
@@ -28,7 +28,7 @@ for i in client.CLIENTE.list_indexes():
         break
 
 if(not cliente_exists_usuario):
-    client.CLIENTE.create_index("user", name="user_un" ,unique=True)
+    client.CLIENTE.create_index("usuario", name="user_un" ,unique=True)
 
 
 if(not client.ATUACAO.find_one({"descricao": "Eletricista"})):
