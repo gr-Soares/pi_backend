@@ -102,7 +102,7 @@ def calculate_avaliacao(http_request: Type[HttpRequest]) -> HttpResponse:
             data = list(data)
 
             media = 0
-            qtde = 0
+            qtde = 1
 
             for i in data:
                 i = dict(i)
