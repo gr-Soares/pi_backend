@@ -29,7 +29,8 @@ def create_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
             data.pop("senha")
 
             response = HttpResponse(200, {"Success": True, "Data": data})
-        except Exception:
+        except Exception as e:
+            print(e)
             http_error = HttpErrors.error_422()
             response = HttpResponse(
                 status_code=http_error["status_code"],
@@ -98,7 +99,8 @@ def update_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
                 client.CLIENTE.update_one({"_id": _id}, {"$set": http_request.body})
                 return HttpResponse(200, {"Success": True, "Data": http_request.body})
 
-        except Exception:
+        except Exception as e:
+            print(e)
             http_error = HttpErrors.error_422()
             response = HttpResponse(
                 status_code=http_error["status_code"],

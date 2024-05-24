@@ -55,6 +55,7 @@ def flask_adapter_no_token(request: Any, route) -> Any:
         if http_request:
             response = route(http_request=http_request)
         else:
+            print("No request")
             http_error = HttpErrors.error_422()
             return HttpResponse(
                 status_code=http_error["status_code"], body=http_error["body"]
@@ -142,6 +143,7 @@ def flask_adapter(request: Any, route) -> Any:
                     status_code=http_error["status_code"], body=http_error["body"]
                 )
         else:
+            print("No request")
             http_error = HttpErrors.error_422()
             return HttpResponse(
                 status_code=http_error["status_code"], body=http_error["body"]

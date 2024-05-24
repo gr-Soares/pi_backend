@@ -1,7 +1,6 @@
 from importlib import import_module
 from flask import Flask
 
-
 def register_blueprints(app):
 
     routes = ("default","profissional","cliente", "atuacao", "portfolio", "avaliacao")
@@ -17,8 +16,9 @@ def register_blueprints(app):
     except AssertionError:
         app.logger.info("Uma ou mais rotas estão em conflito")
 
-    except Exception:
+    except Exception as e:
         app.logger.info("Erro Interno")
+        app.logger.info(e)
 
 
 

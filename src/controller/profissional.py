@@ -7,7 +7,6 @@ from typing import Type
 
 from bson.objectid import ObjectId
 
-
 def create_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
 
     response = None
@@ -50,7 +49,8 @@ def create_profissional(http_request: Type[HttpRequest]) -> HttpResponse:
             data.pop("senha")
 
             response = HttpResponse(200, {"Success": True, "Data": data})
-        except:
+        except Exception as e:
+            print(e)
             http_error = HttpErrors.error_422()
             response = HttpResponse(
                 status_code=http_error["status_code"],
