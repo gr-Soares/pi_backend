@@ -107,13 +107,15 @@ def calculate_avaliacao(http_request: Type[HttpRequest]) -> HttpResponse:
             for i in data:
                 i = dict(i)
 
-                if(i["profissional_id"] == _id):
+                if i["profissional_id"] == _id:
                     qtde += 1
                     media += i["avaliacao"]
 
-            media = media/qtde
+            media = media / (qtde - 1)
 
-            return HttpResponse(200, {"Success": True, "Data": {"media":media, "qtde":qtde}})
+            return HttpResponse(
+                200, {"Success": True, "Data": {"media": media, "qtde": qtde}}
+            )
 
     except Exception:
         http_error = HttpErrors.error_422()
@@ -129,6 +131,7 @@ def calculate_avaliacao(http_request: Type[HttpRequest]) -> HttpResponse:
     )
 
     return response
+
 
 def delete_avaliacao(http_request: Type[HttpRequest]) -> HttpResponse:
     response = None

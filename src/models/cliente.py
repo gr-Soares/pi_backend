@@ -37,7 +37,6 @@ class Cliente:
         return {
             "_id": ObjectId(self._id).__str__(),
             "usuario": self.usuario,
-            "senha": self.senha,
             "bio": self.bio,
             "nome": self.nome,
             "nascimento": self.nascimento,

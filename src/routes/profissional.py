@@ -7,6 +7,7 @@ from src.controller import (
     update_profissional,
     delete_profissional,
 )
+from ..controller.profissional import list_profissional_atuacao, list_profissional_feed
 
 blueprint = Blueprint("profissional", __name__)
 
@@ -42,8 +43,38 @@ def update():
 
 
 @blueprint.route("/profissional", methods=["GET"])
-def list():
+def feed():
     response = flask_adapter(request=request, route=list_profissional)
+
+    if response.status_code < 300:
+        return jsonify(response.body), response.status_code
+
+    return (
+        jsonify(
+            {"error": {"status": response.status_code, "title": response.body["error"]}}
+        ),
+        response.status_code,
+    )
+
+
+@blueprint.route("/profissional/feed", methods=["GET"])
+def list():
+    response = flask_adapter(request=request, route=list_profissional_feed)
+
+    if response.status_code < 300:
+        return jsonify(response.body), response.status_code
+
+    return (
+        jsonify(
+            {"error": {"status": response.status_code, "title": response.body["error"]}}
+        ),
+        response.status_code,
+    )
+
+
+@blueprint.route("/profissional/atuacao", methods=["GET"])
+def atuacao():
+    response = flask_adapter(request=request, route=list_profissional_atuacao)
 
     if response.status_code < 300:
         return jsonify(response.body), response.status_code

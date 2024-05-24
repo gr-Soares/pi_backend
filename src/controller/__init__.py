@@ -3,6 +3,8 @@ from .profissional import (
     list_profissional,
     update_profissional,
     delete_profissional,
+    list_profissional_feed,
+    list_profissional_atuacao
 )
 from .cliente import create_cliente, list_cliente, update_cliente, delete_cliente
 from .atuacao import create_atuacao, list_atuacao, update_atuacao, delete_atuacao

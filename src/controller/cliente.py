@@ -19,10 +19,16 @@ def create_cliente(http_request: Type[HttpRequest]) -> HttpResponse:
             http_request.body.pop("contato")
 
             data = Cliente(**http_request.body, contato=contato, endereco=endereco)
+            senha = data.senha
+            data = data.to_json()
 
-            client.CLIENTE.insert_one(data.to_json())
+            data["senha"] = senha
 
-            response = HttpResponse(200, {"Success": True, "Data": data.to_json()})
+            client.CLIENTE.insert_one(data)
+
+            data.pop("senha")
+
+            response = HttpResponse(200, {"Success": True, "Data": data})
         except Exception:
             http_error = HttpErrors.error_422()
             response = HttpResponse(

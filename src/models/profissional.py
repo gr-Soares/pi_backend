@@ -43,7 +43,6 @@ class Profissional:
         return {
             "_id": ObjectId(self._id).__str__(),
             "usuario": self.usuario,
-            "senha": self.senha,
             "nome": self.nome,
             "bio": self.bio,
             "nascimento": self.nascimento,
