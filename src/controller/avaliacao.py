@@ -111,7 +111,7 @@ def calculate_avaliacao(http_request: Type[HttpRequest]) -> HttpResponse:
                     qtde += 1
                     media += i["avaliacao"]
 
-            media = media / (qtde - 1)
+            media = media / qtde 
 
             return HttpResponse(
                 200, {"Success": True, "Data": {"media": media, "qtde": qtde}}

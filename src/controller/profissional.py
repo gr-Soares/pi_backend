@@ -156,16 +156,19 @@ def list_profissional_feed(http_request: Type[HttpRequest]) -> HttpResponse:
 
             _id = i["_id"]
             ava = client.AVALIACAO.find()
-            ava = list(ava)
 
-            for j in ava:
-                j = dict(j)
+            if(ava != None):
 
-                if j["profissional_id"] == _id:
-                    qtde += 1
-                    media += j["avaliacao"]
+                ava = list(ava)
 
-            media = media / (qtde - 1)
+                for j in ava:
+                    j = dict(j)
+
+                    if j["profissional_id"] == _id:
+                        qtde += 1
+                        media += j["avaliacao"]
+
+                media = media / qtde
 
             _id = ObjectId(i["_id"])
 
